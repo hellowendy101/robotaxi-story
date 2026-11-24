@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robotaxi Crashes and DC</title>
+<meta name="description" content="A scrolling story on what 1,550 federal robotaxi crash reports can and cannot tell DC as it decides whether to authorize commercial robotaxi service.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Overpass:wght@400;600;700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="dots" aria-label="Story sections"></nav>
+
+<!-- 01 Opening -->
+<section class="scene opening" id="s-open" data-label="Start">
+  <div class="opening-bg" role="img" aria-label="A driverless robotaxi stopped at an intersection"></div>
+  <div class="opening-text">
+    <p class="form-tag">FILE: NHTSA SGO / ADS INCIDENT REPORTS · 06.2025–09.2026</p>
+    <h1>Have you ever seen a robotaxi?</h1>
+    <p class="lede">They are coming to more U.S. cities, and DC is deciding whether to let them in. Here is what <span class="hl" id="n-crashes">1,550</span> federal crash reports say about how robotaxis crash, and what the reports leave out.</p>
+    <p class="scroll-cue">Scroll <span aria-hidden="true">↓</span></p>
+  </div>
+  <p class="credit">Photo: Hoseung Han / Unsplash</p>
+</section>
+
+<!-- 02 Why important now -->
+<section class="scene" id="s-now" data-label="Why now">
+  <div class="wrap two-col map-col">
+    <div class="copy">
+      <p class="sec"><b>02</b> Why important now?</p>
+      <h2>In six years, robotaxis went from one metro to a dozen. DC is deciding whether to be next.</h2>
+      <p>Driverless cars now carry paying riders from Phoenix to Miami. In DC, only test vehicles drive. The DC Council held its first hearing on a bill to authorize commercial service in July 2026, and a vote is expected this fall.</p>
+      <div class="year-readout"><span id="year">2020</span><span id="metro-count" class="mono small"></span></div>
+      <button class="ghost" id="replay-map" type="button">↻ Replay</button>
+    </div>
+    <figure class="viz">
+      <div id="metro-map" class="map" aria-label="Map of U.S. metros with public robotaxi rides, appearing by the year service began"></div>
+      <ul id="metro-list" class="metro-list"></ul>
+      <figcaption>Year public robotaxi rides began in each metro (Waymo, Zoox or Tesla). Sources: Business Insider (2025); Electrek (2026); The Charge Port (2026).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 03 Guess -->
+<section class="scene" id="s-guess" data-label="Guess">
+  <div class="wrap">
+    <p class="sec"><b>03</b> Your call</p>
+    <h2>Which kind of robotaxi crash do you think is most common?</h2>
+    <p class="note">Pick one. The answer is on the next page.</p>
+    <div class="guess-grid" id="guess-grid"></div>
+    <p class="guess-feedback mono" id="guess-feedback" aria-live="polite"></p>
+  </div>
+</section>
+
+<!-- 04 Answer -->
+<section class="scene" id="s-answer" data-label="Answer">
+  <div class="wrap two-col">
+    <figure class="viz big-anim sketch" aria-label="Diagram: a car drives up behind a stopped robotaxi and hits its rear bumper"></figure>
+    <div class="copy">
+      <p class="sec"><b>04</b> The answer</p>
+      <h2>In half of all crashes, the robotaxi was standing still.</h2>
+      <p id="your-guess" class="your-guess mono"></p>
+      <div class="bars" id="scenario-bars"></div>
+      <p class="callout">Stopped robotaxis were hit from behind <span class="hl" id="rear-stopped">67%</span> of the time. Moving ones, <span id="rear-moving">38%</span>.</p>
+      <p class="source">Share of 1,550 reported crashes. Source: NHTSA Standing General Order, ADS incident reports.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 Pedestrians -->
+<section class="scene" id="s-ped" data-label="Pedestrians">
+  <div class="wrap ped">
+    <div class="ped-main">
+      <div class="ped-photo" aria-hidden="true"></div>
+      <p class="sec"><b>05</b> Rare, but serious</p>
+      <h2>Crashes with pedestrians and cyclists are rare. Most of them injured someone.</h2>
+      <div class="waffle-row">
+        <div class="waffle big" id="waffle-ped" aria-hidden="true"></div>
+        <p class="waffle-label"><span class="big-num" id="ped-rate">63</span>of every 100 crashes with a pedestrian, cyclist or scooter rider injured someone.<span class="mono small block" id="ped-n">n = 15 of 24 crashes</span></p>
+      </div>
+    </div>
+    <div class="ped-side">
+      <p class="side-head mono">Compare</p>
+      <div class="mini"><div class="waffle small" id="waffle-car" aria-hidden="true"></div><p><strong id="car-rate">12</strong>of 100 with other cars, SUVs, pickups or vans</p></div>
+      <div class="mini"><div class="waffle small" id="waffle-truck" aria-hidden="true"></div><p><strong id="truck-rate">4</strong>of 100 with heavy trucks or buses</p></div>
+      <p class="source">Crashes with known severity. "Injured someone" means any alleged injury, minor to fatal.</p>
+    </div>
+  </div>
+  <p class="credit">Photo: Jonas Gerlach / Unsplash</p>
+</section>
+
+<!-- 06 Topic model -->
+<section class="scene tall" id="s-topics" data-label="Narratives">
+  <div class="wrap">
+    <p class="sec"><b>06</b> Method 1 · Structural topic model</p>
+    <h2>Nine scenarios hiding in 1,525 crash narratives</h2>
+    <p class="lede-sm">Two-thirds of the narratives describe a robotaxi that was stopped or following the rules when another vehicle hit it. The two rear-end scenarios show up more often when someone was hurt.</p>
+    <details class="how">
+      <summary>How did we find this?</summary>
+      <p>Each report includes a paragraph written by the company. A structural topic model reads all 1,525 paragraphs and groups words that tend to appear together, such as "queue", "red" and "behind", into topics. Every narrative gets a share of each topic, and the model estimates whether a topic is more common when someone was injured. Template phrases, company names and places were removed first, so topics describe what happened rather than who wrote it. Each topic was checked twice: by reading its most typical narratives, and against checkbox fields the model never saw.</p>
+    </details>
+    <div class="legend-row mono"><span class="tag up">▲ More common when injured</span><span class="tag down">▼ Less common when injured</span><span class="tag flat">— No clear difference</span></div>
+    <div class="topic-list" id="topic-list"></div>
+    <p class="source">Share = average share of a narrative assigned to the topic. Crashes = narratives where it is the largest topic. Injury: difference in topic share between injury and non-injury crashes, controlling for company, 95% interval. Quotes shortened; [street] marks a redacted name.</p>
+  </div>
+</section>
+
+<!-- 07 Association rules -->
+<section class="scene tall" id="s-rules" data-label="Rules">
+  <div class="wrap">
+    <p class="sec"><b>07</b> Method 2 · Association rule mining</p>
+    <h2>If this, then that: combinations that keep showing up</h2>
+    <p class="lede-sm">Treat each crash's checkbox fields like items in a shopping basket, and patterns appear: which conditions travel together, and which make an injury more likely.</p>
+    <details class="how">
+      <summary>How did we find this?</summary>
+      <p>Supermarkets learn that people who buy chips often buy salsa. Association rule mining does the same with crash features, finding "if this, then that" patterns across 1,550 crashes. Lift says how many times more often the pair appears than chance would predict. Only rules that held in at least 90% of 100 random half-samples are shown.</p>
+    </details>
+    <h3 class="sub mono">How crashes happen</h3>
+    <div class="rule-list" id="rules-typical"></div>
+    <h3 class="sub mono">When someone gets hurt <span class="muted">· average injury rate 10.3%</span></h3>
+    <div class="rule-list" id="rules-injury"></div>
+  </div>
+</section>
+
+<!-- 08 Agreement -->
+<section class="scene" id="s-agree" data-label="Agreement">
+  <div class="wrap">
+    <p class="sec"><b>08</b> Checking the work</p>
+    <h2>Two methods, two kinds of data, one picture</h2>
+    <p class="lede-sm">The rules read checkbox fields. The topics read free text. Where both point the same way, the finding stands on firmer ground.</p>
+    <div class="agree" id="agree-table" role="table" aria-label="Comparison of findings from the two methods"></div>
+  </div>
+</section>
+
+<!-- 09 Data gaps -->
+<section class="scene" id="s-gaps" data-label="Gaps">
+  <div class="wrap two-col">
+    <figure class="viz">
+      <div id="state-map" class="map" aria-label="Map of reported robotaxi crashes by state"></div>
+      <figcaption><span id="top3-share">87%</span> of reported crashes happened in California, Texas and Arizona. Darker = more crashes.</figcaption>
+    </figure>
+    <div class="copy">
+      <p class="sec"><b>09</b> What the data cannot tell us</p>
+      <h2>No winter, and no miles</h2>
+      <div class="zero-card"><span class="zero" id="snow-zero">0</span><p><strong>crashes in snow.</strong> Almost every report comes from places where it rarely snows. DC averages 13.7 inches of snow a year (NOAA). The data cannot show how robotaxis handle a DC winter.</p></div>
+      <div class="zero-card"><span class="zero">0</span><p><strong>miles driven are reported.</strong> More robotaxis on the road means more crashes, even if every trip is just as safe. Without miles, a crash count cannot say whether robotaxis are safer or riskier than human drivers.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 DC options -->
+<section class="scene" id="s-dc" data-label="DC options">
+  <div class="wrap">
+    <p class="sec"><b>10</b> For the DC Council and DDOT</p>
+    <h2>Three options DC could consider</h2>
+    <ol class="options">
+      <li>
+        <p class="o-label mono">Finding</p><p>Crash counts cannot be compared with human drivers, because no miles are reported.</p>
+        <p class="o-label mono act">Option</p><p>Require operators to report miles and trips in DC by ward and month, so crash rates can be calculated.</p>
+      </li>
+      <li>
+        <p class="o-label mono">Finding</p><p>About 1 in 10 narratives describe a robotaxi parked in a travel lane to load passengers, then sideswiped or hit when a door opened.</p>
+        <p class="o-label mono act">Option</p><p>Designate pickup and drop-off zones and require robotaxis to use them, especially on busy downtown corridors.</p>
+      </li>
+      <li>
+        <p class="o-label mono">Finding</p><p>No reported crash happened in snow, and almost none outside warm states.</p>
+        <p class="o-label mono act">Option</p><p>Ask operators for winter-weather testing results before full service, and require DC crash reports to include weather and road conditions.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 11 End -->
+<section class="scene end" id="s-end" data-label="Explore">
+  <div class="wrap">
+    <p class="sec"><b>11</b> Your turn again</p>
+    <h2>Explore the crashes yourself</h2>
+    <p class="lede-sm">Filter by state, company, what the robotaxi hit and weather, and read the narratives behind the numbers.</p>
+    <a class="cta" id="explorer-link" href="#" target="_blank" rel="noopener">Open the crash explorer →</a>
+    <div class="about">
+      <p><span class="mono">DATA</span> NHTSA Standing General Order on Crash Reporting, ADS incident reports submitted June 16, 2025 to September 15, 2026, deduplicated to one row per crash (1,550 crashes). Locations are redacted and dates are month and year only.</p>
+      <p><span class="mono">METHODS</span> Association rule mining in Python (mlxtend); structural topic model in R (stm), with K = 9 topics chosen from diagnostics for K = 4 to 15 and by reading the topics.</p>
+      <p><span class="mono">LIMITS</span> Reports are written by the companies, injuries are alleged, and Waymo files 83% of reports. Patterns describe reported crashes, not their causes.</p>
+      <p class="mono small muted" id="byline">PPOL 5205 · Concept Showcase · Georgetown University</p>
+    </div>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="story.js"></script>
+</body>
+</html>
