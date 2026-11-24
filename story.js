@@ -1,6 +1,6 @@
 // ---------- settings to fill in ----------
 const CONFIG = {
-  author: "",          // e.g. "Your Name" (shown in the footer)
+  author: "",          // Jingwen Xiao
   explorerUrl: ""      // Streamlit Community Cloud link, once deployed
 };
 
