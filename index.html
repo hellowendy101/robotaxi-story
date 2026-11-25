@@ -93,35 +93,43 @@
 </section>
 
 <!-- 06 Topic model -->
-<section class="scene tall" id="s-topics" data-label="Narratives">
+<section class="scene" id="s-topics" data-label="Narratives">
   <div class="wrap">
     <p class="sec"><b>06</b> Method 1 · Structural topic model</p>
     <h2>Nine scenarios hiding in 1,525 crash narratives</h2>
-    <p class="lede-sm">Two-thirds of the narratives describe a robotaxi that was stopped or following the rules when another vehicle hit it. The two rear-end scenarios show up more often when someone was hurt.</p>
+    <p class="note">Two in three describe a robotaxi that was stopped or following the rules when it was hit. Click a bar to read a real report.</p>
+    <div class="topic-viz">
+      <div>
+        <div class="topic-bars" id="topic-bars"></div>
+        <div class="legend-row mono"><span class="tag up">▲ more when injured</span><span class="tag down">▼ less when injured</span><span class="tag flat">no clear difference</span></div>
+      </div>
+      <aside class="evidence" id="evidence" aria-live="polite"></aside>
+    </div>
     <details class="how">
       <summary>How did we find this?</summary>
-      <p>Each report includes a paragraph written by the company. A structural topic model reads all 1,525 paragraphs and groups words that tend to appear together, such as "queue", "red" and "behind", into topics. Every narrative gets a share of each topic, and the model estimates whether a topic is more common when someone was injured. Template phrases, company names and places were removed first, so topics describe what happened rather than who wrote it. Each topic was checked twice: by reading its most typical narratives, and against checkbox fields the model never saw.</p>
+      <p>A structural topic model reads every company-written narrative and groups words that tend to appear together ("queue", "red", "behind") into topics. Each narrative gets a share of each topic, and the model tests whether a topic is more common when someone was injured, controlling for company. Template phrases, company names and places were removed first. Topics were checked by reading their most typical narratives and against checkbox fields the model never saw.</p>
     </details>
-    <div class="legend-row mono"><span class="tag up">▲ More common when injured</span><span class="tag down">▼ Less common when injured</span><span class="tag flat">— No clear difference</span></div>
-    <div class="topic-list" id="topic-list"></div>
-    <p class="source">Share = average share of a narrative assigned to the topic. Crashes = narratives where it is the largest topic. Injury: difference in topic share between injury and non-injury crashes, controlling for company, 95% interval. Quotes shortened; [street] marks a redacted name.</p>
+    <p class="source">Bar = average share of a narrative assigned to the topic. Injury: difference in topic share, injury vs. no injury, 95% interval. Quotes shortened; [street] = redacted name.</p>
   </div>
 </section>
 
 <!-- 07 Association rules -->
-<section class="scene tall" id="s-rules" data-label="Rules">
+<section class="scene" id="s-rules" data-label="Rules">
   <div class="wrap">
     <p class="sec"><b>07</b> Method 2 · Association rule mining</p>
-    <h2>If this, then that: combinations that keep showing up</h2>
-    <p class="lede-sm">Treat each crash's checkbox fields like items in a shopping basket, and patterns appear: which conditions travel together, and which make an injury more likely.</p>
+    <h2>If this, then that</h2>
+    <p class="note">Each bar shows how many times more often the outcome follows than chance alone would predict.</p>
+    <div class="lift-chart">
+      <p class="group mono">How crashes happen</p>
+      <div id="rules-typical"></div>
+      <p class="group mono">When someone gets hurt <span class="muted">· average injury rate 10.3%</span></p>
+      <div id="rules-injury"></div>
+      <div class="lift-axis mono" id="lift-axis"></div>
+    </div>
     <details class="how">
       <summary>How did we find this?</summary>
-      <p>Supermarkets learn that people who buy chips often buy salsa. Association rule mining does the same with crash features, finding "if this, then that" patterns across 1,550 crashes. Lift says how many times more often the pair appears than chance would predict. Only rules that held in at least 90% of 100 random half-samples are shown.</p>
+      <p>Supermarkets learn that people who buy chips often buy salsa. Association rule mining does the same with crash checkbox fields across 1,550 crashes. Lift = how many times more often the pair appears than chance. Only rules that held in at least 90% of 100 random half-samples are shown.</p>
     </details>
-    <h3 class="sub mono">How crashes happen</h3>
-    <div class="rule-list" id="rules-typical"></div>
-    <h3 class="sub mono">When someone gets hurt <span class="muted">· average injury rate 10.3%</span></h3>
-    <div class="rule-list" id="rules-injury"></div>
   </div>
 </section>
 
@@ -156,19 +164,11 @@
   <div class="wrap">
     <p class="sec"><b>10</b> For the DC Council and DDOT</p>
     <h2>Three options DC could consider</h2>
+    <p class="note">Each starts from a finding in the data.</p>
     <ol class="options">
-      <li>
-        <p class="o-label mono">Finding</p><p>Crash counts cannot be compared with human drivers, because no miles are reported.</p>
-        <p class="o-label mono act">Option</p><p>Require operators to report miles and trips in DC by ward and month, so crash rates can be calculated.</p>
-      </li>
-      <li>
-        <p class="o-label mono">Finding</p><p>About 1 in 10 narratives describe a robotaxi parked in a travel lane to load passengers, then sideswiped or hit when a door opened.</p>
-        <p class="o-label mono act">Option</p><p>Designate pickup and drop-off zones and require robotaxis to use them, especially on busy downtown corridors.</p>
-      </li>
-      <li>
-        <p class="o-label mono">Finding</p><p>No reported crash happened in snow, and almost none outside warm states.</p>
-        <p class="o-label mono act">Option</p><p>Ask operators for winter-weather testing results before full service, and require DC crash reports to include weather and road conditions.</p>
-      </li>
+      <li><span class="o-stat">0 mi</span><p class="o-find">of driving are reported, so crash rates cannot be calculated</p><p class="o-label mono act">Option</p><p class="o-act-text">Require miles and trips in DC, by ward and month</p></li>
+      <li><span class="o-stat">1 in 10</span><p class="o-find">narratives: a robotaxi parked in a travel lane to load riders, then clipped</p><p class="o-label mono act">Option</p><p class="o-act-text">Designate pickup and drop-off zones downtown</p></li>
+      <li><span class="o-stat">0</span><p class="o-find">crashes in snow. DC gets 13.7 inches a year</p><p class="o-label mono act">Option</p><p class="o-act-text">Ask for winter-testing results before full service</p></li>
     </ol>
   </div>
 </section>

@@ -1,6 +1,6 @@
 // ---------- settings to fill in ----------
 const CONFIG = {
-  author: "",          // Jingwen Xiao
+  author: "",          // e.g. "Your Name" (shown in the footer)
   explorerUrl: ""      // Streamlit Community Cloud link, once deployed
 };
 
@@ -40,14 +40,14 @@ const TOPICS = [
 ];
 
 const RULES_TYPICAL = [
-  { ifs: ["Other vehicle is backing up"], then: "robotaxi is hit in the front", conf: 71.9, lift: 2.44, n: 120 },
-  { ifs: ["Robotaxi is stopped", "other vehicle is going straight"], then: "robotaxi is hit from behind", conf: 90.5, lift: 1.72, n: 296 },
-  { ifs: ["Crash partner is a heavy truck or bus", "on a regular street"], then: "robotaxi was stopped", conf: 83.9, lift: 1.67, n: 130 }
+  { ifs: "Other vehicle backing up", then: "robotaxi hit in the front", conf: 71.9, lift: 2.44, n: 120 },
+  { ifs: "Robotaxi stopped + other vehicle going straight", then: "hit from behind", conf: 90.5, lift: 1.72, n: 296 },
+  { ifs: "Heavy truck or bus, regular street", then: "robotaxi was stopped", conf: 83.9, lift: 1.67, n: 130 }
 ];
 const RULES_INJURY = [
-  { ifs: ["Robotaxi hits a pedestrian or cyclist"], then: "someone is injured", conf: 62.5, lift: 6.07, n: 15 },
-  { ifs: ["Both vehicles going straight", "robotaxi at 10–25 mph"], then: "someone is injured", conf: 30.3, lift: 2.94, n: 10 },
-  { ifs: ["Night (8 pm–6 am)", "other vehicle going straight", "regular street"], then: "someone is injured", conf: 26.3, lift: 2.56, n: 35 }
+  { ifs: "Robotaxi hits a pedestrian or cyclist", then: "injury", conf: 62.5, lift: 6.07, n: 15 },
+  { ifs: "Both going straight, robotaxi at 10–25 mph", then: "injury", conf: 30.3, lift: 2.94, n: 10 },
+  { ifs: "Night + other vehicle going straight, regular street", then: "injury", conf: 26.3, lift: 2.56, n: 35 }
 ];
 
 const AGREE = [
@@ -167,31 +167,33 @@ function fillWaffles(scope) {
   });
 }
 
-// ---------- 06 topics ----------
-$("#topic-list").innerHTML = TOPICS.map((t) => {
-  const [d, lo, hi] = t.eff;
-  const cls = lo > 0 ? "up" : hi < 0 ? "down" : "flat";
-  const tag = t.style ? `<span class="tag flat">Reporting style</span>` : `<span class="tag ${cls}">${{ up: "▲ More when injured", down: "▼ Less when injured", flat: "— No clear difference" }[cls]}</span>`;
-  const note = t.style ? "Operators on board report their own injuries" : `${d > 0 ? "+" : ""}${d.toFixed(1)} pts [${lo.toFixed(1)}, ${hi.toFixed(1)}]`;
-  return `<article class="topic ${t.style ? "style-topic" : ""}">
-    <div class="t-share">${t.share.toFixed(1)}%<small>${t.crashes} crashes</small><div class="t-bar"><span data-w="${(t.share / 21.8) * 100}"></span></div></div>
-    <div><h4>${t.name}</h4><p class="t-desc">${t.desc}</p></div>
-    <blockquote>"${t.quote}"</blockquote>
-    <div class="topic-side">${tag}<small>${note}</small></div>
-  </article>`;
-}).join("");
+// ---------- 06 topics: bar chart + evidence panel ----------
+const injClass = (t) => (t.style ? "style" : t.eff[1] > 0 ? "up" : t.eff[2] < 0 ? "down" : "flat");
+const MARK = { up: "▲", down: "▼", flat: "", style: "" };
+$("#topic-bars").innerHTML = TOPICS.map((t, i) => `<button type="button" class="tbar ${injClass(t)}" data-i="${i}">
+  <span class="tbar-name">${t.name} <b>${MARK[injClass(t)]}</b></span>
+  <span class="tbar-track"><span class="tbar-fill" data-w="${(t.share / 21.8) * 82}"></span><span class="tbar-val">${t.share.toFixed(1)}%</span></span></button>`).join("");
+function showTopic(i) {
+  const t = TOPICS[i], [d, lo, hi] = t.eff, c = injClass(t);
+  const inj = t.style ? "Reflects reporting: operators on board report their own injuries." :
+    { up: `More common when someone was injured (${d > 0 ? "+" : ""}${d.toFixed(1)} pts, 95% CI ${lo.toFixed(1)} to ${hi.toFixed(1)})`,
+      down: `Less common when someone was injured (${d.toFixed(1)} pts, 95% CI ${lo.toFixed(1)} to ${hi.toFixed(1)})`,
+      flat: "No clear difference between injury and non-injury crashes" }[c];
+  $("#evidence").innerHTML = `<p class="ev-tag mono">EVIDENCE · ${t.crashes} crashes</p><h4>${t.name}</h4><p class="ev-desc">${t.desc}</p>
+    <blockquote>"${t.quote}"</blockquote><p class="ev-inj ${c}">${inj}</p>`;
+  document.querySelectorAll(".tbar").forEach((b) => b.classList.toggle("active", +b.dataset.i === i));
+}
+document.querySelectorAll(".tbar").forEach((b) => b.addEventListener("click", () => showTopic(+b.dataset.i)));
+showTopic(0);
 
-// ---------- 07 rules ----------
-const MAX_LIFT = 6.5;
-const ruleHTML = (r, injury) => `<div class="rule">
-  <p class="rule-text"><span class="kw">IF</span>${r.ifs.join(" + ")} <span class="kw">THEN</span><span class="then-part">${r.then}</span></p>
-  <div>
-    <p class="rule-num" style="margin:0"><strong>${Math.round(r.conf)}%</strong>${injury ? "of these crashes injured someone" : "of the time"} · ${r.n} crashes</p>
-    <div class="lift-track"><span data-w="${(r.lift / MAX_LIFT) * 100}"></span><i class="base" style="left:${(1 / MAX_LIFT) * 100}%"></i></div>
-    <p class="rule-num" style="margin:0">${r.lift.toFixed(1)}× ${injury ? "the average injury rate" : "more often than chance"} · black tick = chance</p>
-  </div></div>`;
-$("#rules-typical").innerHTML = RULES_TYPICAL.map((r) => ruleHTML(r, false)).join("");
-$("#rules-injury").innerHTML = RULES_INJURY.map((r) => ruleHTML(r, true)).join("");
+// ---------- 07 rules: lift chart ----------
+const MAX_LIFT = 8;
+const ruleRow = (r) => `<div class="lrow"><p class="lrow-label">${r.ifs} <span class="arrow-to">→ ${r.then}</span></p>
+  <div class="lrow-track"><i class="chance" style="left:${100 / MAX_LIFT}%"></i><span class="lrow-fill" data-w="${(r.lift / MAX_LIFT) * 100}"></span>
+  <span class="lrow-val mono" style="left:${(r.lift / MAX_LIFT) * 100}%"><b>${r.lift.toFixed(1)}×</b> ${Math.round(r.conf)}% · ${r.n} crashes</span></div></div>`;
+$("#rules-typical").innerHTML = RULES_TYPICAL.map(ruleRow).join("");
+$("#rules-injury").innerHTML = RULES_INJURY.map(ruleRow).join("");
+$("#lift-axis").innerHTML = `<span></span><div class="axis-track">${[0, 1, 2, 3, 4, 5, 6, 7].map((v) => `<span style="left:${(v / MAX_LIFT) * 100}%">${v}×${v === 1 ? " chance" : ""}</span>`).join("")}</div>`;
 
 // ---------- 08 agreement ----------
 $("#agree-table").innerHTML = `<div class="row head" role="row"><span>Finding</span><span>Rules (checkbox fields)</span><span>Topics (narratives)</span><span>Verdict</span></div>` +

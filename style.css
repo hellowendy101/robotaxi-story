@@ -229,3 +229,58 @@ h3.sub { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; mar
   .dots { display: none; }
   .scene { padding: 60px 16px; }
 }
+
+/* ---------- v2: 06 topic bars + evidence panel ---------- */
+.topic-viz { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: start; margin-top: 1.2em; }
+.topic-bars { border-top: 2px solid var(--ink); }
+.tbar { display: grid; grid-template-columns: 15.5em 1fr; gap: 12px; align-items: center; width: 100%; background: none; border: 0; border-bottom: 1px solid var(--hair); padding: 8px 6px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+.tbar:hover, .tbar.active { background: var(--card); }
+.tbar.active { box-shadow: inset 4px 0 0 var(--yellow); }
+.tbar-name { font-family: var(--sans); font-weight: 700; font-size: .95rem; line-height: 1.2; }
+.tbar-name b { font-size: .75rem; }
+.tbar.up .tbar-name b { color: var(--blue); }
+.tbar.down .tbar-name b { color: var(--orange); }
+.tbar-track { position: relative; height: 20px; }
+.tbar-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--gray); transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.tbar.up .tbar-fill { background: var(--blue); }
+.tbar.down .tbar-fill { background: var(--orange); }
+.tbar.style .tbar-fill { background: repeating-linear-gradient(45deg, var(--gray) 0 4px, transparent 4px 8px); }
+.tbar.style .tbar-name { color: var(--muted); }
+.tbar-val { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+.evidence { border: 2px solid var(--ink); background: var(--card); padding: 18px 20px; position: sticky; top: 90px; }
+.ev-tag { font-size: .68rem; color: var(--muted); letter-spacing: .06em; margin-bottom: .6em; }
+.evidence h4 { font-size: 1.3rem; margin-bottom: .3em; }
+.ev-desc { font-size: .92rem; }
+.evidence blockquote { margin: 0 0 1em; font-family: var(--mono); font-size: .78rem; line-height: 1.6; border-left: 3px solid var(--yellow); padding-left: 12px; color: #3b3b37; }
+.ev-inj { font-family: var(--mono); font-size: .74rem; margin: 0; }
+.ev-inj.up { color: var(--blue); } .ev-inj.down { color: var(--orange); } .ev-inj.flat, .ev-inj.style { color: var(--muted); }
+
+/* ---------- v2: 07 lift chart ---------- */
+.lift-chart { margin-top: 1.2em; }
+.lift-chart .group { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; margin: 1.4em 0 .4em; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+.lrow, .lift-axis { display: grid; grid-template-columns: 22em 1fr; gap: 16px; align-items: center; }
+.lrow { padding: 9px 0; border-bottom: 1px solid var(--hair); }
+.lrow-label { margin: 0; font-family: var(--sans); font-size: .98rem; line-height: 1.25; }
+.arrow-to { color: var(--blue); font-weight: 800; white-space: nowrap; }
+.lrow-track { position: relative; height: 22px; }
+.lrow-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--blue); transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.chance { position: absolute; top: -9px; bottom: -9px; border-left: 2px dashed var(--ink); z-index: 2; }
+.lrow-val { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 8px; font-size: .72rem; color: var(--muted); white-space: nowrap; }
+.lrow-val b { color: var(--ink); font-size: .9rem; }
+.axis-track { position: relative; height: 20px; font-size: .66rem; color: var(--muted); }
+.axis-track span { position: absolute; transform: translateX(-50%); top: 4px; white-space: nowrap; }
+
+/* ---------- v2: 10 options with a lead number ---------- */
+.o-stat { display: block; font-family: var(--sans); font-weight: 900; font-size: 3.4rem; line-height: 1; margin-bottom: .2em; text-shadow: 3px 3px 0 var(--yellow); }
+.o-find { font-size: .95rem; color: var(--muted); min-height: 3em; }
+.o-act-text { font-family: var(--sans); font-weight: 800; font-size: 1.2rem; line-height: 1.25; margin: 0; }
+.options li::before { font-size: .8rem; font-family: var(--mono); font-weight: 600; color: var(--muted); position: absolute; top: 14px; right: 16px; margin: 0; }
+
+@media (max-width: 900px) {
+  .topic-viz { grid-template-columns: 1fr; }
+  .evidence { position: static; }
+  .tbar { grid-template-columns: 1fr; gap: 4px; }
+  .lrow, .lift-axis { grid-template-columns: 1fr; gap: 4px; }
+  .lift-axis > span:first-child { display: none; }
+  .lrow-val { font-size: .66rem; }
+}
