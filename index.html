@@ -137,9 +137,34 @@
 <section class="scene" id="s-agree" data-label="Agreement">
   <div class="wrap">
     <p class="sec"><b>08</b> Checking the work</p>
-    <h2>Two methods, two kinds of data, one picture</h2>
-    <p class="lede-sm">The rules read checkbox fields. The topics read free text. Where both point the same way, the finding stands on firmer ground.</p>
-    <div class="agree" id="agree-table" role="table" aria-label="Comparison of findings from the two methods"></div>
+    <h2>Four findings both methods agree on</h2>
+    <p class="note">The rules read checkbox fields. The topics read free text. Where they overlap, the finding stands on firmer ground.</p>
+    <div class="venn" role="group" aria-label="Venn diagram of findings from association rules, the topic model, and both">
+      <svg viewBox="0 -34 960 508" aria-hidden="true">
+        <defs><clipPath id="clip-left"><ellipse cx="300" cy="220" rx="290" ry="210"/></clipPath></defs>
+        <ellipse class="lens" cx="640" cy="220" rx="290" ry="210" clip-path="url(#clip-left)"/>
+        <ellipse class="ring" cx="300" cy="220" rx="290" ry="210"/>
+        <ellipse class="ring" cx="640" cy="220" rx="290" ry="210"/>
+        <text class="ring-label" x="300" y="-12" text-anchor="middle">ASSOCIATION RULES · CHECKBOX FIELDS</text>
+        <text class="ring-label" x="640" y="464" text-anchor="middle">TOPIC MODEL · NARRATIVES</text>
+      </svg>
+      <div class="v-group v-left"><p class="v-head mono">Only the rules</p><ul>
+        <li><b>Pedestrian or cyclist → injury</b><span class="mono">6.1× average · 24 crashes, too few for a topic</span></li>
+      </ul></div>
+      <div class="v-group v-mid"><p class="v-head mono">Both</p><ul>
+        <li><b>Rear-ended while stopped</b><span class="mono">rules 91% · topics 33%</span></li>
+        <li><b>Rear-ends injure more</b><span class="mono">2.6–2.9× · +6.4 pts</span></li>
+        <li><b>Large vehicles, few injuries</b><span class="mono">3.5% injured · −8.2 pts</span></li>
+        <li><b>Backed into the front</b><span class="mono">72% · in 2 topics</span></li>
+      </ul></div>
+      <div class="v-group v-right"><p class="v-head mono">Only the narratives</p><ul>
+        <li><b>Curbside pickup and drop-off</b><span class="mono">10.6% of narrative content</span></li>
+        <li><b>Dual left-turn lanes</b><span class="mono">11.0%</span></li>
+        <li><b>Scrapes at parking-lot entrances</b><span class="mono">6.0%</span></li>
+        <li><b>Downed utility lines</b><span class="mono">within a 7.3% topic</span></li>
+      </ul></div>
+    </div>
+    <div id="agree-table" hidden></div>
   </div>
 </section>
 
