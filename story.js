@@ -207,7 +207,7 @@ $("#snow-zero").textContent = S.snow_crashes;
 
 // ---------- 11 end ----------
 if (CONFIG.explorerUrl) $("#explorer-link").href = CONFIG.explorerUrl;
-else { $("#explorer-link").classList.add("disabled"); $("#explorer-link").textContent = "Crash explorer (Streamlit): link coming soon"; }
+else { $("#explorer-link").classList.add("disabled"); $("#explorer-link").textContent = "Streamlit explorer: local prototype; }
 if (CONFIG.author) $("#byline").textContent = `${CONFIG.author} · PPOL 5205 Concept Showcase · Georgetown University`;
 
 // ---------- maps (need internet for D3 and the U.S. outline) ----------
